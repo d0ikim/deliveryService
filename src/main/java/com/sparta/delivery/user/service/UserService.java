@@ -1,6 +1,9 @@
 package com.sparta.delivery.user.service;
 
+import com.sparta.delivery.global.security.JwtUtil;
+import com.sparta.delivery.user.dto.request.LoginRequest;
 import com.sparta.delivery.user.dto.request.SignupRequest;
+import com.sparta.delivery.user.dto.response.TokenResponse;
 import com.sparta.delivery.user.dto.response.UserResponse;
 import com.sparta.delivery.user.entity.User;
 import com.sparta.delivery.user.repository.UserRepository;
@@ -16,7 +19,9 @@ import org.springframework.web.server.ResponseStatusException;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
+    // 1. 회원가입
     @Transactional  // DB 쓰기작업(save)이 있는 메서드엔 꼭 붙일것!
     public UserResponse signup(SignupRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
@@ -28,5 +33,18 @@ public class UserService {
         User savedUser = userRepository.save(user);
 
         return new UserResponse(savedUser);
+    }
+
+    // 2. 로그인
+    public TokenResponse login(LoginRequest request) {
+        User user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디 또는 비밀번호가 올바르지 않습니다."));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "아이디 또는 비밀번호가 올바르지 않습니다.");
+        }
+
+        // 아이디와 비밀번호가 맞으면, JWT 발급
+        String token = jwtUtil.createToken(user.getUsername(), user.getRole());
+        return new TokenResponse(token);
     }
 }

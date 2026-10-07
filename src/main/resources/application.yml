@@ -16,3 +16,13 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+
+  web:
+    error:
+      include-message: always
+
+# JWT 시크릿 추가
+jwt:
+  secret: "나는-김도이-개발자준비한지-3년-올해말까지만-백엔드개발자-취준해보고-안되면-접을것이다-단기심화가-내-구원자"
+  expiration: 3600000
