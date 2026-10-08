@@ -52,7 +52,7 @@ http://localhost:8080/swagger-ui/index.html
 | 9 | 주문 목록 조회 | `GET /api/orders` | 로그인 사용자 | 200 | 역할별로 다른 목록 반환 |
 | 10 | 주문 취소 | `PATCH /api/orders/{orderId}/cancel` | CUSTOMER(본인) | 204 | 403(본인 주문 아님) · 409(ORDERED 아닌 상태) |
 | 11 | 주문 상태 변경 | `PATCH /api/orders/{orderId}/status` | OWNER(본인) | 200 | 403(본인 메뉴 아님) · 409(허용 안 된 전이) |
-| 12 | 결제 | `POST /api/orders/{orderId}/payments` | CUSTOMER(본인) | 201 | 구현 예정 |
+| 12 | 결제 | `POST /api/orders/{orderId}/payments` | CUSTOMER(본인) | 201 | 400(카드 외 수단) · 403(본인 주문 아님) · 409(ORDERED 아닌 상태) |
 
 ## ERD
 
