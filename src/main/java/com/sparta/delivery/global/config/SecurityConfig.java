@@ -35,6 +35,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // 이 URL들은 인증없이 통과
                         .requestMatchers("/error").permitAll()  // 예외발생시 403으로 묻히는문제 막기위함
+                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/menus/**").permitAll() // TODO : 3단계에서 세분화
