@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface MenuRepository extends JpaRepository<Menu, Long> {
     List<Menu> findAllByDeletedFalse(); // deleted = false인 것만 조회
-
-    Optional<Menu> findByIdAndDeletedFalse(Long id);    // 단건조회 & 수정 & 주문에서 전부 재사용할 메서드
+    
+    Optional<Menu> findByIdAndDeletedFalse(Long id);    // 단건조회 & 수정 & 주문에서 전부 재사용할 메서드 
 }
